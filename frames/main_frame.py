@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from .home_frame import HomeFrame
 from .scan_frame import ScanFrame
-
+from .loadFrame import LoadFrame
 
 COLOUR_PRIMARY = "#2e3f4f"
 COLOUR_SECONDARY = "#293846"
@@ -22,12 +22,15 @@ class Root(tk.Tk):
         self.columnconfigure(0, weight=1)
         self.rowconfigure(0, weight=1)
         self.frames = {}
-        scan_frame = ScanFrame(self)
-        home_frame = HomeFrame(self, lambda: self.show_frame(ScanFrame), scan_frame)
+        load_frame = LoadFrame(self, lambda: self.show_frame(HomeFrame))
+        scan_frame = ScanFrame(self, lambda: self.show_frame(LoadFrame), load_frame.reload_devices)
+        home_frame = HomeFrame(self, lambda: self.show_frame(ScanFrame), lambda: self.show_frame(LoadFrame), scan_frame)
         home_frame.grid(row=0, column=0, sticky="NESW")
+        load_frame.grid(row=0, column=0, sticky="NESW")
         scan_frame.grid(row=0, column=0, sticky="NESW")
         self.frames[HomeFrame] = home_frame
         self.frames[ScanFrame] = scan_frame
+        self.frames[LoadFrame] = load_frame
         self.show_frame(HomeFrame)
 
         style = ttk.Style(self)

@@ -1,10 +1,12 @@
 import json
+import time
 from tkinter import ttk
 import tkinter as tk
+from utils import loadPersistent, get_path
 
 
 class NewDevice(tk.Toplevel):
-    def __init__(self, parent, mac):
+    def __init__(self, parent, mac, show_load, reload_function):
         super().__init__(parent)
         devices = loadPersistent("devices.json")
         devices_path = get_path("devices.json")
@@ -29,6 +31,15 @@ class NewDevice(tk.Toplevel):
         def save():
             if name_variable.get() in devices.keys():
                 handle_text.set("Errore nome già utilizzato")
+                self.update()
+                time.sleep(2)
+            if len(devices) == 5:
+                handle_text.set("Non puoi aggiungere altri device")
+                self.update()
+                time.sleep(2)
+                reload_function()
+                show_load()
+                self.destroy()
             else:
                 devices[name_variable.get()] = {"mac": mac, "protocol": selected_protocol.get()}
                 with open(devices_path, "w") as outfile:
@@ -38,21 +49,3 @@ class NewDevice(tk.Toplevel):
         save_button = ttk.Button(self, text="save", command=save)
         save_button.pack()
         handle_label.pack()
-
-
-def get_path(nameFile):
-    return "/home/.ihosp/" + nameFile
-
-
-def loadPersistent(nameFile):
-    path_file = "/home/.ihosp/" + nameFile
-    with open(path_file) as json_file:
-        return openJson(json_file)
-
-
-def openJson(json_file):
-    try:
-        out = json.load(json_file)
-    except json.decoder.JSONDecodeError:
-        out = {}
-    return out

@@ -1,4 +1,4 @@
-import json
+from utils import  get_path
 import sys
 import tkinter as tk
 from tkinter import ttk
@@ -6,7 +6,7 @@ from ble import scanning
 
 
 class HomeFrame(ttk.Frame):
-    def __init__(self, container, show_frame, scan_frame, *args, **kwargs):
+    def __init__(self, container, show_frame, show_load, scan_frame, *args, **kwargs):
         super().__init__(container)
 
         self.columnconfigure(0, weight=1)
@@ -25,23 +25,15 @@ class HomeFrame(ttk.Frame):
 
         self.button_start = ttk.Button(
             self,
-            text="start",
+            text="add device",
             command=scan_device
         )
         self.button_start.pack()
 
-        def reset_all():
-            with open(get_path("devices.json"), "w") as outfile:
-                outfile.write("")
-            sys.exit()
-
-        self.reset_devices = ttk.Button(
+        self.load_devices = ttk.Button(
             self,
-            text="reset all",
-            command=reset_all
+            text="load configuration",
+            command=show_load
         )
-        self.reset_devices.pack(pady=70)
+        self.load_devices.pack(pady=70)
 
-
-def get_path(nameFile):
-    return "/home/.ihosp/" + nameFile

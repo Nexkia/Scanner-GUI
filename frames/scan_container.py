@@ -5,7 +5,7 @@ import re
 
 
 class Scan(tk.Canvas):
-    def __init__(self, container, values, home_frame, *args, **kwargs):
+    def __init__(self, container, values, home_frame, show_load, reload_function,  *args, **kwargs):
         super().__init__(container, *args, **kwargs)
         self.messages_frame = ttk.Frame(container)
         self.messages_frame.columnconfigure(0, weight=1)
@@ -39,7 +39,7 @@ class Scan(tk.Canvas):
         def getSelected():
             selected = self.listbox.get(self.listbox.curselection())
             res = re.match(r"name=(.{1,})\smac=(.{1,})", selected)
-            NewDevice(self, res.group(2))
+            NewDevice(self, res.group(2), show_load, reload_function)
 
         def new_scan():
             home_frame.tkraise()
