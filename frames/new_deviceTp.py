@@ -16,7 +16,7 @@ class NewDevice(tk.Toplevel):
 
         selected_protocol = tk.StringVar(value="duoek-er2")
         protocol = ttk.Combobox(self, textvariable=selected_protocol)
-        protocol["values"] = ("berry1-3", "berry1-4", "viatompc60w", "aoj-20q", "duoek-er2", "bp2")
+        protocol["values"] = ("berry1-3", "berry1-4", "viatompc60w", "aoj-20q", "duoek-er2", "bp2", "adf_b27")
         protocol["state"] = "readonly"  # "normal is the counterpart"
         protocol.pack()
 
